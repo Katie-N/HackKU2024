@@ -1,12 +1,18 @@
 <template>
-  <img src="../assets/images/Attention.png">
-  <button @click="syncINat">Report Findings!</button>
+<button @click="syncINat">Report Findings!</button>
+  <img src="../assets/images/Hub World.png" class="w-screen h-screen absolute top-0 left-0 z-0">
+  <BulletinBoard />
+
   <p v-for="obs in observations" class="font-pixel bg-yellow-200">{{obs.species_guess}}</p>
 </template>
 
 <script>
+import BulletinBoard from './BulletinBoard.vue';
 export default {
-data() {
+  components: {
+    BulletinBoard,
+  },
+  data() {
     return {
       observations: [],
     }
