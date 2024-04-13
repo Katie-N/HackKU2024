@@ -1,8 +1,8 @@
 <template>
 <button @click="syncINat">Report Findings!</button>
   <img src="../assets/images/Hub World.png" class="w-screen h-screen absolute top-0 left-0 z-0">
-  <BulletinBoard />
-  <BulletinBoardLarge />
+  <BulletinBoard @click="showBulletin = true" />
+  <BulletinBoardLarge v-if="showBulletin" @closeBulletinBoard="showBulletin = false" />
 
 
   <p v-for="obs in observations" class="font-pixel bg-yellow-200">{{obs.species_guess}}</p>
@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       observations: [],
+      showBulletin: false,
     }
   },
   methods: {
