@@ -1,0 +1,12 @@
+/* Maintain pixel look of images when scaled up (we don't want the edges to get blurry) */
+img {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
