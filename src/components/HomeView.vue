@@ -2,7 +2,7 @@
   <!-- <button @click="syncINat" class="absolute z-30 bg-white">Report Findings!</button> -->
   <img src="../assets/images/Hub World.png" class="w-screen h-screen absolute top-0 left-0 z-0">
   <img src="../assets/images/CrowCaw.png" class="absolute left-37/100 top-80 w-20 z-10" @click="interactWithCrow" >
-  <BulletinBoard @click="showBulletin = true; showSyncPrompt = false" class="cursor-pointer" />
+  <BulletinBoard @click="openBulletin" class="cursor-pointer" />
   <BulletinBoardLarge v-if="showBulletin" @closeBulletinBoard="showBulletin = false" class="z-20"/>
   <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" @obsSelected="this.selectedObs = $event" />
   <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" @obsSelected="this.selectedObs = $event" />
@@ -55,14 +55,28 @@ export default {
 
       console.log(this.observations)
     },
+    playCrowSound() {
+      var audio = new Audio('/src/assets/sounds/caw.mp3');
+      audio.volume = 0.4;
+      audio.play();
+    },
     interactWithCrow() {
       this.showSyncPrompt = true;
-      var audio = new Audio('/src/assets/sounds/caw.mp3');
-      audio.play();
+      this.playCrowSound();
     },
     playSoundtrack() {
       var audio = new Audio('/src/assets/sounds/BGMAtmosphere.mp3');
+      audio.volume = 0.5;
       audio.play();
+    },
+    playClickSound() {
+      var audio = new Audio('/src/assets/sounds/Click.mp3');
+      audio.play();
+    },
+    openBulletin() {
+      this.showBulletin = true;
+      this.showSyncPrompt = false;
+      this.playClickSound();
     }
   }
 }
