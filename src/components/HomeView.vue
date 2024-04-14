@@ -1,19 +1,33 @@
 <template>
-  <!-- <button @click="syncINat" class="absolute z-30 bg-white">Report Findings!</button> -->
+  <!-- Background -->
   <img src="../assets/images/Hub World.png" class="w-screen h-screen absolute top-0 left-0 z-0">
-  <img src="../assets/images/CrowCaw.png" class="absolute left-37/100 top-80 w-20 z-10" @click="interactWithCrow" >
+
+  <!-- Crow -->
+  <img src="../assets/images/CrowCaw.png" class="absolute left-37/100 top-80 w-20 z-10 cursor-pointer" @click="interactWithCrow" >
+
+  <!-- Bulletin Board -->
   <BulletinBoard @click="openBulletin" class="cursor-pointer" />
   <BulletinBoardLarge v-if="showBulletin" @closeBulletinBoard="showBulletin = false" class="z-20"/>
+
+  <!-- Garden -->
   <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" @obsSelected="this.selectedObs = $event; playClickSound()" />
   <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" @obsSelected="this.selectedObs = $event; playClickSound()" />
 
+  <!-- Chat Overlay -->
   <Chat v-if="showSyncPrompt" @closeChat="showSyncPrompt=false" text="Do you have more discoveries for the island?" character="crow" interactionPrompt="Report Findings!" @promptButtonPressed="syncINat(); buttonInteraction()" />
 
+  <!-- Stewart the Alien -->
   <Alien class="absolute w-24 left-0 right-0 m-auto top-1/2 h-min"/>
 
+  <!-- Shows the details of every plant in the garden -->
   <Card v-if="this.selectedObs" :observation="this.selectedObs" class="z-30" @deselectObs="this.selectedObs=null" />
-  <Mute @click="playSoundtrack" v-if="this.muted" class="absolute w-24 h-24 m-8" />
-  <Unmute @click="muteSoundtrack" v-if="!this.muted" class="absolute w-24 h-24 m-8" />
+
+  <!-- Easter egg (or should we say "duck egg") This div listens for a click over the duck in the waterfall and gives a big quack! -->
+  <div class="absolute bg-transparent cursor-pointer z-10 w-12 h-12 right-28 bottom-28" @click="quack"></div>
+
+  <!-- Audio Controls -->
+  <Mute @click="playSoundtrack" v-if="this.muted" class="absolute w-24 h-24 m-8 cursor-pointer" />
+  <Unmute @click="muteSoundtrack" v-if="!this.muted" class="absolute w-24 h-24 m-8 cursor-pointer" />
 </template>
 
 <script>
@@ -45,6 +59,9 @@ export default {
       selectedObs: null,
       muted: true,
       soundtrack: new Audio('/src/assets/sounds/BGMAtmosphere.mp3'),
+      quackSound1: new Audio('/src/assets/sounds/Quack1.mp3'),
+      quackSound2: new Audio('/src/assets/sounds/Quack2.mp3'),
+      quackCounter: 0,
     }
   },
   methods: {
@@ -85,6 +102,14 @@ export default {
     playClickSound() {
       var audio = new Audio('/src/assets/sounds/Click.mp3');
       audio.play();
+    },
+    quack() {
+      if (this.quackCounter % 2 == 0) {
+        this.quackSound1.play();
+      } else {
+        this.quackSound2.play();
+      }
+      this.quackCounter++;
     },
     openBulletin() {
       this.showBulletin = true;
