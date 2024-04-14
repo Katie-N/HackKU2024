@@ -4,10 +4,10 @@
   <img src="../assets/images/CrowCaw.png" class="absolute left-37/100 top-80 w-20 z-10" @click="interactWithCrow" >
   <BulletinBoard @click="openBulletin" class="cursor-pointer" />
   <BulletinBoardLarge v-if="showBulletin" @closeBulletinBoard="showBulletin = false" class="z-20"/>
-  <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" @obsSelected="this.selectedObs = $event" />
-  <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" @obsSelected="this.selectedObs = $event" />
+  <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" @obsSelected="this.selectedObs = $event; playClickSound()" />
+  <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" @obsSelected="this.selectedObs = $event; playClickSound()" />
 
-  <Chat v-if="showSyncPrompt" @closeChat="showSyncPrompt=false" text="Do you have more discoveries for the island?" character="crow" interactionPrompt="Report Findings!" @promptButtonPressed="syncINat" />
+  <Chat v-if="showSyncPrompt" @closeChat="showSyncPrompt=false" text="Do you have more discoveries for the island?" character="crow" interactionPrompt="Report Findings!" @promptButtonPressed="syncINat(); buttonInteraction()" />
 
   <Alien class="absolute w-24 left-0 right-0 m-auto top-1/2 h-min"/>
 
@@ -51,8 +51,6 @@ export default {
 
       const obs = await response.json();
       this.observations = obs.results;
-      // this.observations = ["Hi"]
-
       console.log(this.observations)
     },
     playCrowSound() {
@@ -67,6 +65,7 @@ export default {
     playSoundtrack() {
       var audio = new Audio('/src/assets/sounds/BGMAtmosphere.mp3');
       audio.volume = 0.5;
+      audio.loop = true;
       audio.play();
     },
     playClickSound() {
@@ -76,6 +75,9 @@ export default {
     openBulletin() {
       this.showBulletin = true;
       this.showSyncPrompt = false;
+      this.playClickSound();
+    },
+    buttonInteraction() {
       this.playClickSound();
     }
   }

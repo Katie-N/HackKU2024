@@ -22,18 +22,30 @@ export default {
     }
   },
   methods: {
+    playClickSound() {
+      var audio = new Audio('/src/assets/sounds/Click.mp3');
+      audio.play();
+    },
+    playCrowSound() {
+      var audio = new Audio('/src/assets/sounds/caw.mp3');
+      audio.volume = 0.4;
+      audio.play();
+    },
     displayWorldMap() {
       this.text = "That's a map";
       console.log("crack")
       this.showChat = true;
+      this.playCrowSound();
     },
     displayQuest() {
       this.text = "That's a quest";
       this.showChat = true;
+      this.playCrowSound();
     },
     displayStickyNote() {
       this.text = "That's a sticky note";
       this.showChat = true;
+      this.playCrowSound();
     }
   },
 }
