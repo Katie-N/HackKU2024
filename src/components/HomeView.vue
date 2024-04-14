@@ -11,7 +11,7 @@
 
   <Alien class="absolute w-24 left-0 right-0 m-auto top-1/2 h-min"/>
 
-  <Card v-if="this.selectedObs" :observation="this.selectedObs" class="absolute bg-white w-screen h-screen left-0 right-0 z-30" @deselectObs="this.selectedObs=null" />
+  <Card v-if="this.selectedObs" :observation="this.selectedObs" class="z-30" @deselectObs="this.selectedObs=null" />
 </template>
 
 <script>
