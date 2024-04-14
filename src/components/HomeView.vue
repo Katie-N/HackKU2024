@@ -57,6 +57,8 @@ export default {
     },
     interactWithCrow() {
       this.showSyncPrompt = true;
+      var audio = new Audio('/src/assets/sounds/caw.mp3');
+      audio.play();
     },
     playSoundtrack() {
       var audio = new Audio('/src/assets/sounds/BGMAtmosphere.mp3');
