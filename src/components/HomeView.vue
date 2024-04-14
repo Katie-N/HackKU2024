@@ -13,6 +13,8 @@
   <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" @obsSelected="this.selectedObs = $event; playClickSound()" />
   <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" @obsSelected="this.selectedObs = $event; playClickSound()" />
 
+  <Chat v-for="line in crowDialogue.slice().reverse()" @closeChat="crowDialogue.splice(0,1)" :text="line" character="crow" />
+
   <!-- Chat Overlay -->
   <Chat v-if="showSyncPrompt" @closeChat="showSyncPrompt=false" text="Do you have more discoveries for the island?" character="crow" interactionPrompt="Report Findings!" @promptButtonPressed="syncINat(); buttonInteraction()" />
 
@@ -55,13 +57,14 @@ export default {
     return {
       observations: [],
       showBulletin: false,
-      showSyncPrompt: false,
       selectedObs: null,
       muted: true,
       soundtrack: new Audio('/src/assets/sounds/BGMAtmosphere.mp3'),
       quackSound1: new Audio('/src/assets/sounds/Quack1.mp3'),
       quackSound2: new Audio('/src/assets/sounds/Quack2.mp3'),
       quackCounter: 0,
+      showSyncPrompt: false,
+      crowDialogue : ["Hey pal, welcome to the site. Since its your first day, I’ll give you the rundown of how we do things around here.","First! See the bulletin board next to me? That’s where you communicate with the outside world."," You can operate the human that the management team gave you to take pictures of what they see on the surface."," You’ll then upload those pictures here so that the data can be distributed.","Sometimes you’ll get requests from scientists or the management team to observe a specific species.","If you complete their request, they tend to give you neat rewards!","We like to keep a leader board of everyone working in the area. It keeps spirits high when things are mostly… mundane.","We would also like you to directly observe species here on the island. ","To accomodate you, the island has been designed to fabricate new species daily after you’ve recorded their data.","Keep an eye out for any activity you might see scuttling across the ground!", "Well pal, that’s all I’ve got for now. I’ll keep you posted if there’s anything new to know. Other than that, start collecting that data! *CAW*"]
     }
   },
   methods: {
@@ -80,9 +83,12 @@ export default {
       var audio = new Audio('/src/assets/sounds/caw.mp3');
       audio.volume = 0.4;
       audio.play();
+
     },
     interactWithCrow() {
-      this.showSyncPrompt = true;
+      if (this.crowDialogue.length == 0) {
+        this.showSyncPrompt = true;
+      }      
       this.playCrowSound();
     },
     playSoundtrack() {
