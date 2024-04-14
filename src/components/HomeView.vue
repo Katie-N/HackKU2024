@@ -12,6 +12,8 @@
   <Alien class="absolute w-24 left-0 right-0 m-auto top-1/2 h-min"/>
 
   <Card v-if="this.selectedObs" :observation="this.selectedObs" class="z-30" @deselectObs="this.selectedObs=null" />
+
+  <button @click="playSoundtrack" class="absolute w-24 h-24 bg-white">Unmute</button>
 </template>
 
 <script>
@@ -55,6 +57,10 @@ export default {
     },
     interactWithCrow() {
       this.showSyncPrompt = true;
+    },
+    playSoundtrack() {
+      var audio = new Audio('/src/assets/sounds/BGMAtmosphere.mp3');
+      audio.play();
     }
   }
 }
