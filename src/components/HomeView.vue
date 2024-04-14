@@ -12,7 +12,8 @@
   <Alien class="absolute w-24 left-0 right-0 m-auto top-1/2 h-min"/>
 
   <Card v-if="this.selectedObs" :observation="this.selectedObs" class="z-30" @deselectObs="this.selectedObs=null" />
-  <Mute @click="playSoundtrack" class="absolute w-24 h-24 m-8" />
+  <Mute @click="playSoundtrack" v-if="this.muted" class="absolute w-24 h-24 m-8" />
+  <Unmute @click="muteSoundtrack" v-if="!this.muted" class="absolute w-24 h-24 m-8" />
 </template>
 
 <script>
@@ -23,6 +24,7 @@ import Chat from './Chat.vue';
 import Alien from './Alien.vue';
 import Card from './Card.vue';
 import Mute from './Mute.vue';
+import Unmute from './Unmute.vue';
 
 export default {
   components: {
@@ -33,6 +35,7 @@ export default {
     Alien,
     Card,
     Mute,
+    Unmute,
   },
   data() {
     return {
@@ -40,6 +43,8 @@ export default {
       showBulletin: false,
       showSyncPrompt: false,
       selectedObs: null,
+      muted: true,
+      soundtrack: new Audio('/src/assets/sounds/BGMAtmosphere.mp3'),
     }
   },
   methods: {
@@ -64,10 +69,18 @@ export default {
       this.playCrowSound();
     },
     playSoundtrack() {
-      var audio = new Audio('/src/assets/sounds/BGMAtmosphere.mp3');
-      audio.volume = 0.5;
-      audio.loop = true;
-      audio.play();
+      this.muted = false;
+      // We only want to start playing the soundtrack if the track is not already playing
+      if (this.soundtrack.currentTime == 0) {
+        this.soundtrack.volume = 0.5;
+        this.soundtrack.loop = true;
+        this.soundtrack.play();
+      }
+      this.soundtrack.muted = false;
+    },
+    muteSoundtrack() {
+      this.soundtrack.muted = true;
+      this.muted = true;
     },
     playClickSound() {
       var audio = new Audio('/src/assets/sounds/Click.mp3');

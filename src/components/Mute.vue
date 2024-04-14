@@ -49,10 +49,8 @@
 export default {
 data() {
     return {
-      characterPortrait: "/src/assets/images/CrowCaw.png"
     }
   },
-  props: ['text', 'character', 'interactionPrompt'],
   methods:{
   },
 }
