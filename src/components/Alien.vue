@@ -1,6 +1,6 @@
 <template>
     <div>
-      <img src="../assets/images/">
+      <img src="../assets/images/Stewart.png">
     </div>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
 data() {
     return {
-      
+
     }
   },
   methods:{

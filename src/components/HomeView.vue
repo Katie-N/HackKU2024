@@ -5,11 +5,11 @@
   <BulletinBoard @click="showBulletin = true; showSyncPrompt = false" class="cursor-pointer" />
   <BulletinBoardLarge v-if="showBulletin" @closeBulletinBoard="showBulletin = false" class="z-20"/>
   <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" />
-  <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9)" />
+  <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" />
 
   <Chat v-if="showSyncPrompt" @closeChat="showSyncPrompt=false" text="Do you have more discoveries for the island?" character="crow" interactionPrompt="Report Findings!" @promptButtonPressed="syncINat" />
 
-  <Alien />
+  <Alien class="absolute w-24 left-0 right-0 m-auto top-1/2 h-min"/>
 
   <p v-for="obs in observations" class="font-pixel bg-yellow-200">{{obs.species_guess}}</p>
 </template>
@@ -19,12 +19,14 @@ import BulletinBoard from './BulletinBoard.vue';
 import BulletinBoardLarge from './BulletinBoardLarge.vue';
 import Plot from './Plot.vue';
 import Chat from './Chat.vue';
+import Alien from './Alien.vue';
 export default {
   components: {
     BulletinBoard,
     BulletinBoardLarge,
     Plot,
     Chat,
+    Alien,
   },
   data() {
     return {
