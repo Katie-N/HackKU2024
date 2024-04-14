@@ -11,6 +11,11 @@ module.exports = {
       fontFamily: {
         pixel: ["Pixelify Sans", "sans-serif"],
       },
+      spacing: {
+        '1/5': '20%',
+        '5/12': '41.667%',
+        '37/100': '37%',
+      },
     },
   },
   plugins: [],

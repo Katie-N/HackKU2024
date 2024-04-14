@@ -1,9 +1,11 @@
 <template>
-<button @click="syncINat">Report Findings!</button>
+  <button @click="syncINat" class="absolute z-30 bg-white">Report Findings!</button>
   <img src="../assets/images/Hub World.png" class="w-screen h-screen absolute top-0 left-0 z-0">
-  <BulletinBoard @click="showBulletin = true" />
-  <BulletinBoardLarge v-if="showBulletin" @closeBulletinBoard="showBulletin = false" />
-
+  <img src="../assets/images/CrowCaw.png" class="absolute left-37/100 top-80 w-20 z-10" >
+  <BulletinBoard @click="showBulletin = true" class="cursor-pointer" />
+  <BulletinBoardLarge v-if="showBulletin" @closeBulletinBoard="showBulletin = false" class="z-20"/>
+  <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" />
+  <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9)" />
 
   <p v-for="obs in observations" class="font-pixel bg-yellow-200">{{obs.species_guess}}</p>
 </template>
@@ -11,10 +13,12 @@
 <script>
 import BulletinBoard from './BulletinBoard.vue';
 import BulletinBoardLarge from './BulletinBoardLarge.vue';
+import Plot from './Plot.vue';
 export default {
   components: {
     BulletinBoard,
     BulletinBoardLarge,
+    Plot,
   },
   data() {
     return {
