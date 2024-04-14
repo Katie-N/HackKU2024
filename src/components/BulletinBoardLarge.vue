@@ -32,18 +32,18 @@ export default {
       audio.play();
     },
     displayWorldMap() {
-      this.text = "That's a map";
+      this.text = "This is where you can see all of the places you've helped humans explore.";
       console.log("crack")
       this.showChat = true;
       this.playCrowSound();
     },
     displayQuest() {
-      this.text = "That's a quest";
+      this.text = "No quests here. Check back later for more.";
       this.showChat = true;
       this.playCrowSound();
     },
     displayStickyNote() {
-      this.text = "That's a sticky note";
+      this.text = "That's a sticky note - it doesn't do much...";
       this.showChat = true;
       this.playCrowSound();
     }
