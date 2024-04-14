@@ -13,7 +13,8 @@
   <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" @obsSelected="this.selectedObs = $event; playClickSound()" />
   <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" @obsSelected="this.selectedObs = $event; playClickSound()" />
 
-  <Chat v-for="line in crowDialogue.slice().reverse()" @closeChat="crowDialogue.splice(0,1)" :text="line" character="crow" />
+  <Chat v-for="line in crowDialogue.slice().reverse()" @closeChat="crowDialogue.splice(0,1); playTextBubble()" :text="line" character="crow" />
+  
 
   <!-- Chat Overlay -->
   <Chat v-if="showSyncPrompt" @closeChat="showSyncPrompt=false" text="Do you have more discoveries for the island?" character="crow" interactionPrompt="Report Findings!" @promptButtonPressed="syncINat(); buttonInteraction()" />
@@ -84,6 +85,12 @@ export default {
       audio.volume = 0.4;
       audio.play();
 
+    },
+        playTextBubble() {
+      var audio = new Audio('/src/assets/sounds/Text bubbles.mp3');
+      audio.volume = 1;
+      audio.play();
+      
     },
     interactWithCrow() {
       if (this.crowDialogue.length == 0) {
