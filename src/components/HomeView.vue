@@ -2,16 +2,18 @@
   <!-- <button @click="syncINat" class="absolute z-30 bg-white">Report Findings!</button> -->
   <img src="../assets/images/Hub World.png" class="w-screen h-screen absolute top-0 left-0 z-0">
   <img src="../assets/images/CrowCaw.png" class="absolute left-37/100 top-80 w-20 z-10" @click="interactWithCrow" >
-  <BulletinBoard @click="showBulletin = true; showSyncPrompt = false" class="cursor-pointer" />
+  <BulletinBoard @click="openBulletin" class="cursor-pointer" />
   <BulletinBoardLarge v-if="showBulletin" @closeBulletinBoard="showBulletin = false" class="z-20"/>
-  <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" @obsSelected="this.selectedObs = $event" />
-  <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" @obsSelected="this.selectedObs = $event" />
+  <Plot class="w-56 h-24 bg-transparent absolute left-1/5 top-80" :observations="this.observations.slice(0,2).concat('').concat(this.observations.slice(2,4)).concat('').concat(this.observations.slice(4,6))" @obsSelected="this.selectedObs = $event; playClickSound()" />
+  <Plot class="w-56 h-24 bg-transparent absolute right-1/5 top-80" :observations="this.observations.slice(9,12).concat('').concat(this.observations.slice(12))" @obsSelected="this.selectedObs = $event; playClickSound()" />
 
-  <Chat v-if="showSyncPrompt" @closeChat="showSyncPrompt=false" text="Do you have more discoveries for the island?" character="crow" interactionPrompt="Report Findings!" @promptButtonPressed="syncINat" />
+  <Chat v-if="showSyncPrompt" @closeChat="showSyncPrompt=false" text="Do you have more discoveries for the island?" character="crow" interactionPrompt="Report Findings!" @promptButtonPressed="syncINat(); buttonInteraction()" />
 
   <Alien class="absolute w-24 left-0 right-0 m-auto top-1/2 h-min"/>
 
   <Card v-if="this.selectedObs" :observation="this.selectedObs" class="z-30" @deselectObs="this.selectedObs=null" />
+  <Mute @click="playSoundtrack" v-if="this.muted" class="absolute w-24 h-24 m-8" />
+  <Unmute @click="muteSoundtrack" v-if="!this.muted" class="absolute w-24 h-24 m-8" />
 </template>
 
 <script>
@@ -21,6 +23,8 @@ import Plot from './Plot.vue';
 import Chat from './Chat.vue';
 import Alien from './Alien.vue';
 import Card from './Card.vue';
+import Mute from './Mute.vue';
+import Unmute from './Unmute.vue';
 
 export default {
   components: {
@@ -30,6 +34,8 @@ export default {
     Chat,
     Alien,
     Card,
+    Mute,
+    Unmute,
   },
   data() {
     return {
@@ -37,6 +43,8 @@ export default {
       showBulletin: false,
       showSyncPrompt: false,
       selectedObs: null,
+      muted: true,
+      soundtrack: new Audio('/src/assets/sounds/BGMAtmosphere.mp3'),
     }
   },
   methods: {
@@ -49,12 +57,42 @@ export default {
 
       const obs = await response.json();
       this.observations = obs.results;
-      // this.observations = ["Hi"]
-
       console.log(this.observations)
+    },
+    playCrowSound() {
+      var audio = new Audio('/src/assets/sounds/caw.mp3');
+      audio.volume = 0.4;
+      audio.play();
     },
     interactWithCrow() {
       this.showSyncPrompt = true;
+      this.playCrowSound();
+    },
+    playSoundtrack() {
+      this.muted = false;
+      // We only want to start playing the soundtrack if the track is not already playing
+      if (this.soundtrack.currentTime == 0) {
+        this.soundtrack.volume = 0.5;
+        this.soundtrack.loop = true;
+        this.soundtrack.play();
+      }
+      this.soundtrack.muted = false;
+    },
+    muteSoundtrack() {
+      this.soundtrack.muted = true;
+      this.muted = true;
+    },
+    playClickSound() {
+      var audio = new Audio('/src/assets/sounds/Click.mp3');
+      audio.play();
+    },
+    openBulletin() {
+      this.showBulletin = true;
+      this.showSyncPrompt = false;
+      this.playClickSound();
+    },
+    buttonInteraction() {
+      this.playClickSound();
     }
   }
 }
