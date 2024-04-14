@@ -12,8 +12,7 @@
   <Alien class="absolute w-24 left-0 right-0 m-auto top-1/2 h-min"/>
 
   <Card v-if="this.selectedObs" :observation="this.selectedObs" class="z-30" @deselectObs="this.selectedObs=null" />
-
-  <button @click="playSoundtrack" class="absolute w-24 h-24 bg-white">Unmute</button>
+  <Mute @click="playSoundtrack" class="absolute w-24 h-24 m-8" />
 </template>
 
 <script>
@@ -23,6 +22,7 @@ import Plot from './Plot.vue';
 import Chat from './Chat.vue';
 import Alien from './Alien.vue';
 import Card from './Card.vue';
+import Mute from './Mute.vue';
 
 export default {
   components: {
@@ -32,6 +32,7 @@ export default {
     Chat,
     Alien,
     Card,
+    Mute,
   },
   data() {
     return {
